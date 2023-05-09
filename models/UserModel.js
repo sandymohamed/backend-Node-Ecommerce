@@ -24,14 +24,6 @@ const userSchema = new mongoose.Schema({
         default: false,
 
     },
-    // createdAt: {
-    //     type: Date,
-    //     default: Date.now
-    // },
-    // updatedAt: {
-    //     type: Date,
-    //     default: Date.now
-    // },
 },
     { timestamps: true }
 );
