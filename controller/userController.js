@@ -1,6 +1,8 @@
 const asyncHandler = require('express-async-handler')
 const UserModel = require('../models/UserModel');
 const generateToken = require('../utils/generateToken')
+const bcrypt = require('bcryptjs');
+
 
 exports.getUsers = asyncHandler(async (req, res) => {
 
@@ -47,14 +49,49 @@ exports.getUserProfile = asyncHandler(async (req, res) => {
 
 })
 
+exports.updateUserProfile = asyncHandler(async (req, res) => {
+
+    const user = await UserModel.findById(req?.user?._id)
+
+    if (user) {
+        user.firstName = req.body.firstName || user.firstName
+        user.lastName = req.body.lastName || user.lastName
+        user.email = req.body.email || user.email
+
+        if (req.body.password) {
+            user.password = req.body.password
+        }
+
+        const updatedUser = await user.save()
+
+        res.json({
+            _id: updatedUser._id,
+            firstName: updatedUser.firstName,
+            lastName: updatedUser.lastName,
+            email: updatedUser.email,
+            isAdmin: updatedUser.isAdmin,
+            token: generateToken(updatedUser._id),
+        })
+    } else {
+        res.status(404).json({ message: 'User not found!!' })
+    }
+
+})
+
 
 exports.authUser = asyncHandler(async (req, res) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { email, password } = req.body;
 
     try {
         const user = await UserModel.findOne({ email }).exec();
 
-        if (user && user.matchPassword(password)) {
+        var passwordIsValid = bcrypt.compareSync(password, user.password);
+
+        if (!passwordIsValid) {
+            return res.status(401).send({ message: 'Invalid Password!' });
+        }
+
+        else if (user && passwordIsValid) {
             res.json({
                 _id: user._id,
                 firstName: user.firstName,
