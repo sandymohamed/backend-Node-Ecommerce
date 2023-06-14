@@ -7,6 +7,7 @@ const connectDB = require('./config/db')
 const  { productsRouter }  = require('./routes/productsRoutes')
 const  { usersRouter }  = require('./routes/usersRoutes');
 const { ordersRouter } = require('./routes/orderRoutes');
+const { cartRouter } = require('./routes/cartRoutes');
 
 const bodyParser = require('body-parser');
 const paypal = require('paypal-rest-sdk');
@@ -35,9 +36,6 @@ app.get('/', (req, res)=> {
 })
 
 
-// app.use('/api/config/payment', (req, res) => 
-//     res.send(process.env.PAYPAL_CLIENT_ID)
-// )
 
 // PayPal configuration
 paypal.configure({
@@ -51,76 +49,12 @@ app.use(bodyParser.json());
 app.use(['/api/products', '/api/product'], productsRouter) 
 app.use(['/api/users', '/api/user'], usersRouter) 
 app.use(['/api/orders', '/api/order'], ordersRouter) 
-
-
-//   // Create PayPal payment
-//   app.post('/create-payment', (req, res) => {
-//     console.log('create');
-//     const paymentData = {
-//       intent: 'sale',
-//       payer: {
-//         payment_method: 'paypal',
-//       },
-//       redirect_urls: {
-//         return_url: 'http://localhost:3000/success',
-//         cancel_url: 'http://localhost:3000/cancel',
-//       },
-//       transactions: [
-//         {
-//           amount: {
-//             total: '10.00',
-//             currency: 'USD',
-//           },
-//           description: 'Sample description',
-//         },
-//       ],
-//     };
-  
-//     paypal.payment.create(paymentData, (error, payment) => {
-//       if (error) {
-//         console.error(error);
-//         res.sendStatus(500);
-//       } else {
-//         // Redirect the user to the approval_url
-//         const { links } = payment;
-//         const approvalUrl = links.find(link => link.rel === 'approval_url');
-//         res.redirect(approvalUrl.href);
-//       }
-//     });
-//   });
-  
-  // Capture PayPal payment
-//   app.post('/capture-payment', (req, res) => {
-//     console.log('capture');
-
-//     const { paymentId, payerId } = req.body;
-  
-//     const captureData = {
-//       amount: {
-//         currency: 'USD',
-//         total: '10.00',
-//       },
-//     };
-  
-//     paypal.payment.capture(paymentId, captureData, (error, capture) => {
-//       if (error) {
-//         console.error(error);
-//         res.sendStatus(500);
-//       } else {
-//         // Payment captured successfully
-//         res.json({ status: 'success', capture });
-//       }
-//     });
-//   });
-
-  
-
-
+app.use(['/api/carts', '/api/cart'], cartRouter) 
 
 
 
 app.use(( req, res, next)=> {
-    const error = new Error(`Not Found - ${req.originalurl}`)
+    const error = new Error(`Not Found... - ${req.originalurl}`)
     res.status(404);
     next(error);
 })

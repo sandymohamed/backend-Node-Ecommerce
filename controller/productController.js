@@ -5,7 +5,7 @@ const ProductModel = require('../models/ProductModel');
 exports.getProducts = asyncHandler(async (req, res) => {
 
     const products = await ProductModel.find({})
-
+    
     if (products) {
         return res.json(products)
     } else {
