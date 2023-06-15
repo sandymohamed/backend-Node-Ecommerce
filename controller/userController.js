@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler')
 const UserModel = require('../models/UserModel');
 const generateToken = require('../utils/generateToken')
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 
 exports.getUsers = asyncHandler(async (req, res) => {
@@ -28,6 +29,26 @@ exports.getUserByID = asyncHandler(async (req, res) => {
     }
 
 })
+
+exports.getUserDetails = asyncHandler(async (req, res) => {
+    let token;
+
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        try {
+            token = req.headers.authorization.split(' ')[1];
+
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+            req.user = await UserModel.findById(decoded.id).select('-password');
+        }
+        catch (err) {
+            console.log(err);
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+        // Return the user data in the response
+        res.json(req.user);
+    }
+});
 
 
 exports.getUserProfile = asyncHandler(async (req, res) => {

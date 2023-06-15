@@ -30,6 +30,19 @@ exports.getCartByID = asyncHandler(async (req, res, next) => {
 
 })
 
+exports.getCartByUser = asyncHandler(async (req, res, next) => {
+
+  const cart = await CartModel.findOne({ user: req.params.user });
+
+
+  if (cart) {
+    res.json(cart)
+  } else {
+    res.status(404).json({ message: 'Cart not found!!' })
+  }
+
+})
+
 
 exports.addCartItems = asyncHandler(async (req, res) => {
   const {
@@ -43,54 +56,55 @@ exports.addCartItems = asyncHandler(async (req, res) => {
   if (!user) {
     return res.status(200).json({ message: "there is no user so data didn't save " });
   } else {
-      console.log(user);
+    console.log(user);
 
-  // Find the cart for the user
-  const cart = await CartModel.findOne({ user: user });
+    // Find the cart for the user
+    const cart = await CartModel.findOne({ user: user });
 
-  if (!products || products.length === 0) {
-    res.status(400).json({ message: 'No cart items' });
-  } else {
-    if (cart) {
-      // If cart exists, update it with new products
-      cart.products = products;
-      cart.total = total;
-      cart.totalQuantity = totalQuantity;
-      await cart.save();
-      res.status(200).json({ message: `cart: ${cart}`});
+    if (!products || products.length === 0) {
+      res.status(400).json({ message: 'No cart items' });
     } else {
-      // If cart doesn't exist, create a new one
-      const newCart = new CartModel({
-        user,
-        products,
-        total,
-        totalQuantity,
-      });
-      const createdCart = await newCart.save();
-      res.status(200).json(createdCart);
+      if (cart) {
+        // If cart exists, update it with new products
+        cart.products = products;
+        cart.total = total;
+        cart.totalQuantity = totalQuantity;
+        await cart.save();
+        res.status(200).json(cart);
+      } else {
+        // If cart doesn't exist, create a new one
+        const newCart = new CartModel({
+          user,
+          products,
+          total,
+          totalQuantity,
+        });
+        const createdCart = await newCart.save();
+        res.status(200).json(createdCart);
+      }
     }
-  }}
+  }
 
-});   
+});
 
 
 
 
 // delete one cart by id
-exports.deleteCart =asyncHandler(async (req, res) => {
-    const { id } = req.params;
-  
-    try {
-      // Delete the cart
-      const result = await CartModel.deleteOne({ _id: id });
-  
-      if (result.deletedCount === 0) {
-        return res.status(404).json({ message: 'Cart not found' });
-      }
-  
-      res.json({ message: 'Cart deleted successfully' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });
+exports.deleteCart = asyncHandler(async (req, res) => {
+  const { user } = req.params;
+
+  try {
+    // Delete the cart
+    const result = await CartModel.deleteOne({ user: user });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ message: 'Cart not found' });
     }
-  });
+
+    res.json({ message: 'Cart deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
