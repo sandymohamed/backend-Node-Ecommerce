@@ -106,8 +106,12 @@ exports.authUser = asyncHandler(async (req, res) => {
     try {
         const user = await UserModel.findOne({ email }).exec();
 
+        console.log(user, password, user.password);
+        
+        
         var passwordIsValid = bcrypt.compareSync(password, user.password);
-
+        console.log(passwordIsValid);
+        
         if (!passwordIsValid) {
             return res.status(401).send({ message: 'Invalid Password!' });
         }

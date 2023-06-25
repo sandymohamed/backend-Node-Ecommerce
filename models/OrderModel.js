@@ -44,13 +44,13 @@ const orderSchema = new mongoose.Schema({
     taxPrice: {
         type: Number,
         default: 0.0,
-        required: true,
+        required: false,
     },
 
     shippingPrice: {
         type: Number,
         default: 0.0,
-        required: true,
+        required: false,
     },
     isPaid: {
         type: Boolean,

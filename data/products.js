@@ -48,19 +48,19 @@
       version: "1.2"
     },
       {
-        name: "Product 1",
+        name: "Product 11",
         image: "https://dummyimage.com/300x300/000/fff",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         brand: "Brand 1",
         category: "Category 1",
         oldPrice: 20,
-        price: 10.99,
-        countInStock: 10,
+        price: 20.99,
+        countInStock: 8,
         rating: 4.5,
         version: "1.0"
       },
       {
-        name: "Product 2",
+        name: "Product 42",
         image: "https://dummyimage.com/300x300/000/fff",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         brand: "Brand 2",
@@ -71,7 +71,7 @@
         version: "1.1"
       },
       {
-        name: "Product 3",
+        name: "Product 33",
         image: "https://dummyimage.com/300x300/000/fff",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
         brand: "Brand 3",
