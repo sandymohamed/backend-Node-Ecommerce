@@ -1,9 +1,5 @@
 const asyncHandler = require('express-async-handler')
 const CartModel = require('../models/CartModel');
-const paypal = require('paypal-rest-sdk');
-const { CheckoutNodeJssdk } = require('@paypal/checkout-server-sdk');
-const UserModel = require('../models/UserModel');
-const ObjectId = require('mongoose').Types.ObjectId
 
 
 exports.getCartItems = asyncHandler(async (req, res) => {
@@ -63,6 +59,7 @@ exports.addCartItems = asyncHandler(async (req, res) => {
 
     if (!products || products.length === 0) {
       res.status(400).json({ message: 'No cart items' });
+
     } else {
       if (cart) {
         // If cart exists, update it with new products
@@ -71,7 +68,9 @@ exports.addCartItems = asyncHandler(async (req, res) => {
         cart.totalQuantity = totalQuantity;
         await cart.save();
         res.status(200).json(cart);
+
       } else {
+
         // If cart doesn't exist, create a new one
         const newCart = new CartModel({
           user,
@@ -79,6 +78,7 @@ exports.addCartItems = asyncHandler(async (req, res) => {
           total,
           totalQuantity,
         });
+
         const createdCart = await newCart.save();
         res.status(200).json(createdCart);
       }

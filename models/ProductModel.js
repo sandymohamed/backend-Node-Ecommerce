@@ -2,11 +2,6 @@ const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
 
-    // user: {
-    //     type: mongoose.Types.ObjectId,
-    //     required: true,
-    //     ref: 'User',
-    // },
     name: {
         type: String,
         required: true
@@ -44,7 +39,7 @@ const productSchema = new mongoose.Schema({
 
     },
 },
-{    timestamps: true}
+    { timestamps: true }
 );
 
 

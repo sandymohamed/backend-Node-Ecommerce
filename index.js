@@ -8,10 +8,9 @@ const  { productsRouter }  = require('./routes/productsRoutes')
 const  { usersRouter }  = require('./routes/usersRoutes');
 const { ordersRouter } = require('./routes/orderRoutes');
 const { cartRouter } = require('./routes/cartRoutes');
+const path = require('path');
 
 const bodyParser = require('body-parser');
-const paypal = require('paypal-rest-sdk');
-const { CheckoutNodeJssdk } = require('@paypal/checkout-server-sdk');
 
 
 
@@ -30,19 +29,12 @@ app.use(express.json())
 app.use(express.urlencoded())
 app.use(express.static('./public'))
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 app.get('/', (req, res)=> {
     res.send('API is running')
 })
-
-
-
-// PayPal configuration
-paypal.configure({
-    mode: 'sandbox', // Set to 'live' for production
-    client_id: 'AcdIue6OSWJoAFIRAmsyu4fkXqYSqY7VtLOuaGqfxq2yRrczxaDMXKLT8KGpP5D2-2_Rh-xVV54Eg3lj',
-    client_secret: 'EJHFq0TL6jek0pIkXmfXpx4L32sQU20Y_5MjXY3qNgnTRXzeYQ3apDtKRFA5SqPCDBslwy7t8cAueE0H',
-});
 
 app.use(bodyParser.json());
 
