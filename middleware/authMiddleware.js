@@ -26,3 +26,15 @@ exports.protect = async (req, res, next) => {
 
   next();
 };
+
+
+exports.adminOnly = async( req, res, next) => {
+
+  if(!req.user.isAdmin) {
+    return res.status(403).json({message: 'Forbidden'})
+
+  }
+
+  next();
+
+}
