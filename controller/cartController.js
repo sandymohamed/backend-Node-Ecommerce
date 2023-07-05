@@ -52,7 +52,6 @@ exports.addCartItems = asyncHandler(async (req, res) => {
   if (!user) {
     return res.status(200).json({ message: "there is no user so data didn't save " });
   } else {
-    console.log(user);
 
     // Find the cart for the user
     const cart = await CartModel.findOne({ user: user });

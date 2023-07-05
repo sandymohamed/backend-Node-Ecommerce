@@ -7,7 +7,7 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
     products: [{
-        product: {
+        _id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Product',
             required: true
@@ -35,10 +35,11 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
     paymentResult: {
-        id: { type: String },
-        status: { type: String },
-        update_time: { type: String },
-        email_address: { type: String },
+        id: { type: String,  required: false, },
+        status: { type: String,  required: false, },
+        update_time: { type: String,  required: false, },
+        email_address: { type: String,  required: false, },
+       
     },
 
     taxPrice: {

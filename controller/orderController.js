@@ -43,7 +43,7 @@ exports.addOrderItems = asyncHandler(async (req, res, next) => {
     shippingPrice,
     isPaid,
     paidAt,
-    status,
+    // status,
     deliveredAt,
   } = req.body;
 
@@ -56,12 +56,12 @@ exports.addOrderItems = asyncHandler(async (req, res, next) => {
       totalPrice,
       shippingAddress,
       paymentMethods,
-      paymentResult,
+      // paymentResult,
       taxPrice,
       shippingPrice,
       isPaid,
       paidAt,
-      status,
+      // status,
       deliveredAt,
     });
 
