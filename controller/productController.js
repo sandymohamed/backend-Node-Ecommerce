@@ -168,7 +168,7 @@ exports.editProduct = asyncHandler(async (req, res) => {
     res.json(updatedProduct);
   } catch (error) {
     // Handle any errors that occurred during saving
-    res.status(500).json({ message: 'Product creation failed' });
+    res.status(500).json({ message: 'Product update failed!!' });
   }
 });
 

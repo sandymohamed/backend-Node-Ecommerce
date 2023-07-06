@@ -31,14 +31,26 @@ exports.getOrderByID = asyncHandler(async (req, res, next) => {
 
 })
 
-exports.addOrderItems = asyncHandler(async (req, res, next) => {
+
+exports.getOrdersByUser = asyncHandler(async (req, res) => {
+
+
+  const orders = await OrderModel.find({ user: req.user })
+
+  if (orders) {
+    res.json(orders)
+  } else {
+    res.status(404).json({ message: 'order not found!!' })
+  }
+
+})
+
+exports.addOrderItems = asyncHandler(async (req, res) => {
   const {
-    user,
     products,
     totalPrice,
     shippingAddress,
     paymentMethods,
-    paymentResult,
     taxPrice,
     shippingPrice,
     isPaid,
@@ -72,6 +84,36 @@ exports.addOrderItems = asyncHandler(async (req, res, next) => {
 });
 
 
+exports.editOrder = asyncHandler(async (req, res) => {
+
+  const {
+    paymentResult,
+    status,
+    deliveredAt,
+  } = req.body;
+
+  const order = await OrderModel.findById(req.params.id)
+
+  if (!order) {
+    res.status(404).json({ message: 'order not found!!' })
+  } 
+
+  if (status && status !== 'placed' && status !== 'shipped' && status !== 'delivered') {
+    res.status(500).json({ message: 'delieverdAt should be one of three options {placed / shipped / delivered}' });
+  }
+  
+    order.paymentResult = paymentResult;
+    order.status = status;
+    order.delieverdAt = deliveredAt;
+  try{
+
+   const updatedOrder= await order.save();
+    res.status(200).json(order);
+  } catch(error) {
+    res.status(500).json({ message: 'Order update failed!!' });
+
+  }
+})
 
 
 exports.deleteOrderByID = asyncHandler(async (req, res) => {

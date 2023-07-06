@@ -26,10 +26,13 @@ exports.getCartByID = asyncHandler(async (req, res, next) => {
 
 })
 
-exports.getCartByUser = asyncHandler(async (req, res, next) => {
+exports.getCartByUser = asyncHandler(async (req, res) => {
+  const user = req.user._id;
+console.log(user);
 
-  const cart = await CartModel.findOne({ user: req.params.user });
+const cart = await CartModel.find({ user });
 
+console.log(cart);
 
   if (cart) {
     res.json(cart)
@@ -91,11 +94,11 @@ exports.addCartItems = asyncHandler(async (req, res) => {
 
 // delete one cart by id
 exports.deleteCart = asyncHandler(async (req, res) => {
-  const { user } = req.params;
+  const user = req.user._id;
 
   try {
     // Delete the cart
-    const result = await CartModel.deleteOne({ user: user });
+    const result = await CartModel.deleteOne({ user });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ message: 'Cart not found' });

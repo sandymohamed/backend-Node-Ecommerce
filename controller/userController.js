@@ -141,7 +141,7 @@ exports.authUser = asyncHandler(async (req, res) => {
 
 
 exports.registerUser = asyncHandler(async (req, res) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, isAdmin } = req.body;
 
     try {
         const existUser = await UserModel.findOne({ email })
@@ -188,6 +188,8 @@ exports.deleteUser = asyncHandler(async (req, res) => {
 
     const user = req.user._id;
 
+    console.log(user);
+
     try {
         if (!user) {
             res.status(404).json({ message: "User not found!!" })
@@ -195,7 +197,7 @@ exports.deleteUser = asyncHandler(async (req, res) => {
 
             await UserModel.findByIdAndDelete(user)
         }
-
+        
 
     } catch (err) {
         console.log(err);
