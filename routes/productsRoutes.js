@@ -22,13 +22,13 @@ const upload = multer({ storage: storage });
 
 router.get('/', getProducts)
 
-router.get('/category', getProductByCategory)
+router.get('/category/:category', getProductByCategory)
 
-router.get('/name', getProductByName)
+router.get('/name/:name', getProductByName)
 
-router.get('/brand', getProductByBrand)
+router.get('/brand/:brand', getProductByBrand)
 
-router.get('/rate', getProductByRate)
+router.get('/rate/:rate', getProductByRate)
 
 router.get('/all-brands', getBrandsNames)
 

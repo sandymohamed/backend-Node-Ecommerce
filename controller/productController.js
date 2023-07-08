@@ -29,14 +29,15 @@ exports.getProductByID = asyncHandler(async (req, res) => {
 
 
 exports.getProductByCategory = asyncHandler(async (req, res) => {
+  const category = req.params.category;
 
-  const category = req.body.category;
+  let products;
 
   if (!category) {
-    return res.status(404).json({ message: "Category not found!" });
+    products = await ProductModel.find({});
+  } else {
+    products = await ProductModel.find({ category: category });
   }
-
-  const products = await ProductModel.find({ category: category });
 
   if (products.length > 0) {
     res.json(products);
@@ -49,7 +50,7 @@ exports.getProductByCategory = asyncHandler(async (req, res) => {
 
 exports.getProductByName = asyncHandler(async (req, res) => {
 
-  const name = req.body.name;
+  const name = req.params.name;
 
   if (!name) {
     return res.status(404).json({ message: "Product not found!" });
@@ -68,7 +69,7 @@ exports.getProductByName = asyncHandler(async (req, res) => {
 
 exports.getProductByBrand = asyncHandler(async (req, res) => {
 
-  const brand = req.body.brand;
+  const brand = req.params.brand;
 
   if (!brand) {
     return res.status(404).json({ message: "Brand not found!" });
@@ -86,7 +87,7 @@ exports.getProductByBrand = asyncHandler(async (req, res) => {
 
 
 exports.getProductByRate = asyncHandler(async (req, res) => {
-  const rate = req.body.rate;
+  const rate = req.params.rate;
 
   let products = [];
 
