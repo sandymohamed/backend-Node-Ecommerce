@@ -35,7 +35,7 @@ exports.getOrderByID = asyncHandler(async (req, res, next) => {
 exports.getOrdersByUser = asyncHandler(async (req, res) => {
 
 
-  const orders = await OrderModel.find({ user: req.user })
+  const orders = await OrderModel.find({ user: req.user }).sort({ createdAt: -1 });
 
   if (orders) {
     res.json(orders)
@@ -205,16 +205,16 @@ exports.ordersEachMonthDetails = asyncHandler(async (req, res) => {
 exports.productMostSell = asyncHandler(async (req, res) => {
   try {
     // Retrieve all orders
-    const orders = await OrderModel.find();
-
+    const orders = await OrderModel.find({});
+    
     // Count the quantity of each product sold
     const productQuantityMap = {};
-
-
+    
+    
     orders.forEach(order => {
       order.products.forEach(product => {
 
-        const productId = product.product.toString();
+        const productId = product._id.toString();
         const quantity = product.quantity;
 
 

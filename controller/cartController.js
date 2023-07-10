@@ -28,11 +28,8 @@ exports.getCartByID = asyncHandler(async (req, res, next) => {
 
 exports.getCartByUser = asyncHandler(async (req, res) => {
   const user = req.user._id;
-console.log(user);
 
-const cart = await CartModel.find({ user });
-
-console.log(cart);
+  const cart = await CartModel.find({ user });
 
   if (cart) {
     res.json(cart)
@@ -45,12 +42,13 @@ console.log(cart);
 
 exports.addCartItems = asyncHandler(async (req, res) => {
   const {
-    user,
+    // user,
     products,
     total,
     totalQuantity,
   } = req.body;
 
+  const user = req.user._id;
 
   if (!user) {
     return res.status(200).json({ message: "there is no user so data didn't save " });
