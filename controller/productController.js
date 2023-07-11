@@ -193,6 +193,7 @@ exports.deleteProductByID = asyncHandler(async (req, res) => {
 
 //  get all categories' names
 exports.getCategoriesNames = asyncHandler(async (req, res) => {
+  
   try {
     const categories = await ProductModel.distinct('category');
     res.json(categories);

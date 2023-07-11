@@ -1,16 +1,17 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
+const bodyParser = require('body-parser');
 
 const products = require('./data/products');
-const connectDB = require('./config/db')
-const  { productsRouter }  = require('./routes/productsRoutes')
-const  { usersRouter }  = require('./routes/usersRoutes');
+const connectDB = require('./config/db');
+
+const { productsRouter } = require('./routes/productsRoutes')
+const { usersRouter } = require('./routes/usersRoutes');
 const { ordersRouter } = require('./routes/orderRoutes');
 const { cartRouter } = require('./routes/cartRoutes');
-const path = require('path');
-
-const bodyParser = require('body-parser');
+const { reviewRouter } = require('./routes/reviewsRoutes');
 
 
 
@@ -32,20 +33,21 @@ app.use(express.static('./public'))
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
-app.get('/', (req, res)=> {
+app.get('/', (req, res) => {
     res.send('API is running')
 })
 
 app.use(bodyParser.json());
 
-app.use(['/api/products', '/api/product'], productsRouter) 
-app.use(['/api/users', '/api/user'], usersRouter) 
-app.use(['/api/orders', '/api/order'], ordersRouter) 
-app.use(['/api/carts', '/api/cart'], cartRouter) 
+app.use(['/api/products', '/api/product'], productsRouter)
+app.use(['/api/users', '/api/user'], usersRouter)
+app.use(['/api/orders', '/api/order'], ordersRouter)
+app.use(['/api/carts', '/api/cart'], cartRouter)
+app.use(['/api/reviews', '/api/review'], reviewRouter)
 
 
 
-app.use(( req, res, next)=> {
+app.use((req, res, next) => {
     const error = new Error(`Not Found... - ${req.originalurl}`)
     res.status(404);
     next(error);
@@ -59,6 +61,6 @@ app.use((err, req, res, next) => {
 
 })
 
-app.listen(port, 
+app.listen(port,
     console.log(`server running : http://localhost:${port}/`)
-    )
+)
