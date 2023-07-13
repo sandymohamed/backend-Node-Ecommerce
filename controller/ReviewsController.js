@@ -1,16 +1,13 @@
 const asyncHandler = require('express-async-handler')
 const ReviewsModel = require('../models/ReviewsModel')
-const UserModel = require('../models/UserModel');
 
 
 exports.getReviews = asyncHandler(async (req, res) => {
 
   const productId = req.body.product;
-  // const userId = req.user._id;
-
 
   if (productId) {
-    const reviews = await ReviewsModel.find({ productId }).populate('userId')
+    const reviews = await ReviewsModel.find({ productId }).populate('userId').sort({rating: -1})
     if (!reviews) {
 
       res.status(200).json({ message: 'There is no reviews yet!!' })
@@ -95,14 +92,31 @@ exports.editReview = asyncHandler(async (req, res) => {
 
 
 exports.deleteReviewByID = asyncHandler(async (req, res) => {
+  const user = req.user._id;
 
-  const reviews = await ReviewsModel.findByIdAndDelete(req.params.id)
+  const review = await ReviewsModel.findById(req.params.id);
 
-  if (!reviews) {
-    res.status(404).json({ message: 'review not found!!' })
-  } else {
-    res.json({ message: `review ${req.params.id} deleted successfully` })
+  if (!review) {
+    return res.status(404).json({ message: 'Review not found!' });
   }
 
-})
+  if (user.equals(review.userId)) {
+    await ReviewsModel.findByIdAndDelete(review._id);
+    res.json({ message: `Review ${req.params.id} deleted successfully` });
+  } else {
+    res.status(403).json({ message: 'Forbidden' });
+  }
+});
+
+exports.deleteReviewByIDAdmin = asyncHandler(async (req, res) => {
+
+  try{
+  const review = await ReviewsModel.findByIdAndDelete(req.params.id);
+
+  res.json(review);
+} catch (error) {
+  res.status(500).json({ message: 'Failed to delete' });
+}
+});
+
 

@@ -61,13 +61,9 @@ exports.getUserProfile = asyncHandler(async (req, res) => {
             firstName: updatedUser.firstName,
             lastName: updatedUser.lastName,
             email: updatedUser.email,
+            avatar: updatedUser?.avatar,
             isAdmin: updatedUser.isAdmin,
             token: generateToken(updatedUser._id),
-            // "_id": "6452f5d697dec7e99c7e029b",
-            // "firstName": "John",
-            // "lastName": "Doe",
-            // "email": "johndoe@example.com",
-            // "isAdmin": true,
 
         })
     } else {
@@ -85,6 +81,7 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
         user.firstName = req.body.firstName || user.firstName
         user.lastName = req.body.lastName || user.lastName
         user.email = req.body.email || user.email
+        user.avatar = req?.file?.path || user?.avatar
         user.isAdmin = req.body.isAdmin || user.isAdmin
 
         if (req.body.password) {
@@ -98,6 +95,7 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
             firstName: updatedUser.firstName,
             lastName: updatedUser.lastName,
             email: updatedUser.email,
+            avatar: updatedUser?.avatar,
             isAdmin: updatedUser.isAdmin,
             token: generateToken(updatedUser._id),
         })
@@ -126,6 +124,7 @@ exports.authUser = asyncHandler(async (req, res) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
+                avatar: user?.avatar,
                 isAdmin: user.isAdmin,
                 token: generateToken(user._id),
             });
@@ -142,6 +141,7 @@ exports.authUser = asyncHandler(async (req, res) => {
 
 exports.registerUser = asyncHandler(async (req, res) => {
     const { firstName, lastName, email, password, isAdmin } = req.body;
+    const avatar = req?.file?.path;
 
     try {
         const existUser = await UserModel.findOne({ email })
@@ -155,6 +155,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
             firstName,
             lastName,
             email,
+            avatar,
             password,
             isAdmin
         })
@@ -166,6 +167,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
+                avatar: user?.avatar,
                 isAdmin: user.isAdmin,
                 token: generateToken(user._id),
             });
@@ -188,8 +190,6 @@ exports.deleteUser = asyncHandler(async (req, res) => {
 
     const user = req.user._id;
 
-    console.log(user);
-
     try {
         if (!user) {
             res.status(404).json({ message: "User not found!!" })
@@ -200,7 +200,6 @@ exports.deleteUser = asyncHandler(async (req, res) => {
         
 
     } catch (err) {
-        console.log(err);
         res.status(500).json({ message: 'Server Error' });
     }
 

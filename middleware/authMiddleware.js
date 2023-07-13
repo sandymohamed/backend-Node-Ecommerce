@@ -6,11 +6,10 @@ exports.protect = async (req, res, next) => {
 
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
-      token = req.headers.authorization.split(' ')[1];
+      token = req?.headers?.authorization?.split(' ')[1];
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      console.log(req.user);
       
       req.user = await UserModel.findById(decoded.id).select('-password');
 
@@ -19,7 +18,6 @@ exports.protect = async (req, res, next) => {
       }
       
     } catch (err) {
-      console.log(err);
       return res.status(401).json({ message: 'Unauthorized' });
     }
   } else {
@@ -32,7 +30,7 @@ exports.protect = async (req, res, next) => {
 
 exports.adminOnly = async( req, res, next) => {
 
-  if(!req.user.isAdmin) {
+  if(!req?.user?.isAdmin) {
     return res.status(403).json({message: 'Forbidden'})
 
   }

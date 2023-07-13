@@ -31,7 +31,6 @@ const importData = async () => {
 
         await ProductModel.insertMany(sampleProducts)
 
-        console.log('Data imported :)');
         process.exit()
     }
     catch (error) {
@@ -47,7 +46,6 @@ const destroyData = async() => {
         await ProductModel.deleteMany();
         await User.deleteMany();
 
-        console.log('data destroyed!');
         process.exit()
 
     }
