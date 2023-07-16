@@ -19,7 +19,11 @@ const ReviewSchema = new mongoose.Schema({
   comment: {
     type: String,
     required: true
-  }
+  },
+  image: {
+    type: String,
+    required: true
+},
 }, { timestamps: true });
 
 const ReviewModel = mongoose.model('Review', ReviewSchema);

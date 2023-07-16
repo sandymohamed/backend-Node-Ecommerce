@@ -37,6 +37,8 @@ exports.getReviewByID = asyncHandler(async (req, res) => {
 exports.addNewReview = asyncHandler(async (req, res) => {
   const user = req.user._id;
 
+  console.log('review', req?.body.image);
+
   if (!req.body.product && !user) {
     return res.status(400).json({ message: 'No user or product selected' });
   }
@@ -46,12 +48,15 @@ exports.addNewReview = asyncHandler(async (req, res) => {
     userId: user,
     rating: req.body.rating,
     comment: req.body.comment,
+    image: req?.file?.path,
+
 
   });
 
   try {
     const createdReview = await newReview.save();
-
+    
+    console.log('review', createdReview);
     res.json(createdReview);
   } catch (error) {
     res.status(500).json({ message: 'Product creation failed' });
@@ -73,6 +78,7 @@ exports.editReview = asyncHandler(async (req, res) => {
   console.log('review', review);
   review.rating = req.body.rating;
   review.comment = req.body.comment;
+  review.image = req.file.path;
 
   try {
     if (review.userId.equals(user)) {

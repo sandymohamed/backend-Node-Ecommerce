@@ -1,22 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { getUsers, getUserByID, authUser, getUserProfile, registerUser, updateUserProfile, getUserDetails, deleteUser } = require('../controller/userController');
-const multer = require('multer');
 const { protect, adminOnly } = require('../middleware/authMiddleware');
+const upload = require('./multerConfig'); 
 
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/') // Specify the destination folder for uploaded files
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname) // Use the original filename for the uploaded file
-  }
-});
-
-
-// Create Multer instance
-const upload = multer({ storage: storage });
 
 
 router.get('/', protect, adminOnly, getUsers);

@@ -9,7 +9,7 @@ exports.getProducts = asyncHandler(async (req, res) => {
   if (products) {
     return res.json(products)
   } else {
-    res.status(404).json({ message: 'product not found!!' })
+    res.status(404).json({ message: 'products not found!!' })
   }
 }
 )
