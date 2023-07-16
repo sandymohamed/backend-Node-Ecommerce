@@ -23,8 +23,8 @@ This is the README file for the backend of an E-Commerce website. The backend is
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/your-backend-repo.git
-cd your-backend-repo
+git clone https://github.com/sandymohamed/backend-Node-Ecommerce.git
+cd backend-Node-Ecommerce
 ```
 
 2. Install dependencies:
