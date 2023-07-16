@@ -51,40 +51,61 @@ Here are the available API endpoints for the backend:
 
 1. **Users**
 
-- `POST /api/users/register`: Register a new user.
+- `POST /api/users/`: Get All users data (requires admin access).
+- `POST /api/users/signup`: Register a new user.
 - `POST /api/users/login`: Login with existing user credentials.
-- `GET /api/users/profile`: Get the current user's profile.
-- `PUT /api/users/profile`: Update the current user's profile.
+- `GET /api/users/profile`: Get the current user's profile (requires authentication).
+- `PUT /api/users/profile`: Update the current user's profile (requires authentication).
+- `GET /api/users/:id`: Get user's profile by user id (requires authentication).
+- `DELETE /api/users/`: Delete the current user's profile (requires authentication).
 
 2. **Products**
 
 - `GET /api/products`: Get a list of all products.
+- `GET /api/products/latest`: Get a list of the latest products.
+- `GET /api/products/category/:category`: Get products belonging to a specific category.
+- `GET /api/products/name/:name`: Get products with a specific name.
+- `GET /api/products/brand/:brand`: Get products from a specific brand.
+- `GET /api/products/rate/:rate`: Get products with a specific rating.
+- `GET /api/products/all-brands`: Get a list of all distinct brand names.
+- `GET /api/products/all-categories`: Get a list of all distinct category names.
 - `GET /api/products/:id`: Get a specific product by its ID.
-- `POST /api/products`: Create a new product (requires admin access).
-- `PUT /api/products/:id`: Update an existing product (requires admin access).
-- `DELETE /api/products/:id`: Delete a product (requires admin access).
+- `POST /api/products`: Create a new product (requires authentication and admin access).
+- `PUT /api/products/:id`: Update an existing product (requires authentication and admin access).
+- `DELETE /api/products/:id`: Delete a product (requires authentication and admin access).
 
 3. **Cart**
 
-- `GET /api/carts`: Get the current user's cart.
-- `POST /api/carts`: Add a product to the cart.
-- `PUT /api/carts/:id`: Update the quantity of a product in the cart.
-- `DELETE /api/carts/:id`: Remove a product from the cart.
+- `GET /api/carts/user`: Get the current user's cart (requires authentication).
+- `POST /api/carts`: Add a product to the cart Or :  Update the quantity of a product in the cart (requires authentication).
+- `DELETE /api/carts/`: Remove a product from the cart of the current user (requires authentication).
 
 4. **Orders**
 
-- `GET /api/orders`: Get all orders (requires admin access).
-- `GET /api/orders/myorders`: Get the current user's orders.
-- `GET /api/orders/:id`: Get a specific order by its ID.
-- `POST /api/orders`: Create a new order.
-- `PUT /api/orders/:id/pay`: Update the payment status of an order (requires admin access).
-- `PUT /api/orders/:id/deliver`: Update the delivery status of an order (requires admin access).
+- `GET /api/orders`: Get a list of all orders (requires authentication as an admin).
+- `GET /api/orders/user`: Get a list of orders for the current authenticated user (requires authentication).
+- `POST /api/orders`: Create a new order (requires authentication).
+- `PUT /api/orders/:id`: Update an existing order (requires authentication).
+- `GET /api/orders/details`: Get order and user data for infographics (requires authentication as an admin).
+- `GET /api/orders/month-details`: Get order and user data for each month (requires authentication as an admin).
+- `GET /api/orders/products-most-sold`: Get the most sold products (requires authentication as an admin).
+- `GET /api/orders/:id`: Get a specific order by its ID (requires authentication).
+- `DELETE /api/orders/:id`: Delete an order by its ID (requires authentication).
 
 5. **Product Reviews**
 
-- `GET /api/reviews/:productId`: Get all reviews for a specific product.
-- `POST /api/reviews/:productId`: Add a review to a specific product.
-- `DELETE /api/reviews/:id`: Delete a review (requires admin access).
+- `POST /api/reviews/`: Get all reviews for a specific product.
+- `GET /api/reviews/:id`: Get a review by id.
+- `POST /api/reviews/new`: Add a review to a specific product.
+- `PUT /api/reviews/edit/:id`: Delete a review (requires admin access).
+- `DELETE /api/reviews/:id`: Delete a review (requires authentication).
+- `DELETE /api/reviews/admin/:id'`: Delete a review (requires admin access).
+
+ ## Note
+
+- The `upload.single('image')` middleware is used to handle image file uploads for new products and product updates.
+- The `protect` middleware is used to ensure authentication for adding, editing, and deleting products.
+- The `adminOnly` middleware is used to restrict certain operations to admin users only.
 
 ## Data Models
 
