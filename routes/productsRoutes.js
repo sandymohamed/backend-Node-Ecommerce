@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getProducts, getProductByID, addNewProduct, editProduct, deleteProductByID, getProductByCategory, getProductByName, getProductByBrand, getProductByRate, getBrandsNames, getCategoriesNames } = require('../controller/productController')
+const { getProducts, getProductByID, addNewProduct, editProduct, deleteProductByID, getProductByCategory, getProductByName, getProductByBrand, getProductByRate, getBrandsNames, getCategoriesNames, getnewProducts } = require('../controller/productController')
 const { protect, adminOnly } = require('../middleware/authMiddleware');
 const upload = require('./multerConfig'); // Import the Multer configuration
 
@@ -8,6 +8,8 @@ const upload = require('./multerConfig'); // Import the Multer configuration
 
 
 router.get('/', getProducts)
+
+router.get('/latest', getnewProducts)
 
 router.get('/category/:category', getProductByCategory)
 

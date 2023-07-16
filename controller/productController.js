@@ -11,6 +11,17 @@ exports.getProducts = asyncHandler(async (req, res) => {
   } else {
     res.status(404).json({ message: 'products not found!!' })
   }
+})
+
+exports.getnewProducts = asyncHandler(async (req, res) => {
+
+  const products = await ProductModel.find({}).sort({ createdAt: -1 }).limit(15)
+
+  if (products) {
+    return res.json(products)
+  } else {
+    res.status(404).json({ message: 'products not found!!' })
+  }
 }
 )
 
