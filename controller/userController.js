@@ -30,26 +30,6 @@ exports.getUserByID = asyncHandler(async (req, res) => {
 
 })
 
-exports.getUserDetails = asyncHandler(async (req, res) => {
-    let token;
-
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        try {
-            token = req.headers.authorization.split(' ')[1];
-
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-            req.user = await UserModel.findById(decoded.id).select('-password');
-        }
-        catch (err) {
-            console.log(err);
-            return res.status(401).json({ message: 'Unauthorized' });
-        }
-        // Return the user data in the response
-        res.json(req.user);
-    }
-});
-
 
 exports.getUserProfile = asyncHandler(async (req, res) => {
 
@@ -57,13 +37,13 @@ exports.getUserProfile = asyncHandler(async (req, res) => {
 
     if (user) {
         res.json({
-            _id: updatedUser._id,
-            firstName: updatedUser.firstName,
-            lastName: updatedUser.lastName,
-            email: updatedUser.email,
-            avatar: updatedUser?.avatar,
-            isAdmin: updatedUser.isAdmin,
-            token: generateToken(updatedUser._id),
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            avatar: user?.avatar,
+            isAdmin: user.isAdmin,
+            token: generateToken(user._id),
 
         })
     } else {

@@ -37,8 +37,6 @@ exports.getReviewByID = asyncHandler(async (req, res) => {
 exports.addNewReview = asyncHandler(async (req, res) => {
   const user = req.user._id;
 
-  console.log('review', req?.body.image);
-
   if (!req.body.product && !user) {
     return res.status(400).json({ message: 'No user or product selected' });
   }
@@ -56,10 +54,9 @@ exports.addNewReview = asyncHandler(async (req, res) => {
   try {
     const createdReview = await newReview.save();
     
-    console.log('review', createdReview);
     res.json(createdReview);
   } catch (error) {
-    res.status(500).json({ message: 'Product creation failed' });
+    res.status(500).json({ message: 'Failed to add review' });
   }
 });
 
@@ -68,21 +65,18 @@ exports.editReview = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const user = req.user._id;
 
-  console.log('user', user);
   const review = await ReviewsModel.findById(id);
 
   if (!review) {
     return res.status(404).json({ message: 'Review not found' });
   }
 
-  console.log('review', review);
   review.rating = req.body.rating;
   review.comment = req.body.comment;
   review.image = req.file.path;
 
   try {
     if (review.userId.equals(user)) {
-      console.log('equal');
       const updatedReview = await review.save(); // Fixed typo here
       res.json(updatedReview);
     } else {

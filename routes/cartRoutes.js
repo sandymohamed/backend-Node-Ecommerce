@@ -6,8 +6,6 @@ const { getCartItems, getCartByID, addCartItems, deleteCart, getCartByUser } = r
 router.get('/user/', protect, getCartByUser);
 router.get('/', protect, getCartItems);
 
-
-
 router.post('/',protect, addCartItems);
 router.get('/:id', protect, getCartByID);
 

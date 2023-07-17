@@ -1,17 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { getUsers, getUserByID, authUser, getUserProfile, registerUser, updateUserProfile, getUserDetails, deleteUser } = require('../controller/userController');
+const { getUsers, getUserByID, authUser, getUserProfile, registerUser, updateUserProfile, deleteUser } = require('../controller/userController');
 const { protect, adminOnly } = require('../middleware/authMiddleware');
 const upload = require('./multerConfig'); 
 
 
 
 router.get('/', protect, adminOnly, getUsers);
-router.get('/user-details', protect, getUserDetails);
 
 router.post('/signup', upload.single('avatar'), registerUser);
 router.post('/login', upload.single('avatar'), authUser)
-
 
 router.get('/profile', protect, getUserProfile)
 

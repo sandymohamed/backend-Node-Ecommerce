@@ -4,7 +4,7 @@ const { protect, adminOnly } = require('../middleware/authMiddleware');
 const { addOrderItems, getOrders, getOrderByID, ordersDetails, ordersEachMonthDetails, productMostSell, getOrdersByUser, editOrder, deleteOrderByID } = require('../controller/orderController');
 
 
-router.get('/', protect, getOrders);
+router.get('/', protect, adminOnly, getOrders);
 router.get('/user/', protect, getOrdersByUser);
 
 router.post('/', protect, addOrderItems);

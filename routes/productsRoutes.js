@@ -25,9 +25,9 @@ router.get('/all-categories', getCategoriesNames)
 
 router.get('/:id', getProductByID)
 
-router.post('/', upload.single('image'), protect, addNewProduct);
+router.post('/', upload.single('image'),  addNewProduct);
 
-router.put('/:id', upload.single('image'), protect, adminOnly, editProduct);
+router.put('/:id', upload.single('image'), adminOnly, editProduct);
 
 router.delete('/:id', protect, adminOnly, deleteProductByID);
 
