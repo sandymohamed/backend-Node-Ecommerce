@@ -89,6 +89,11 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
 exports.authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
+    if (!email) {
+        return res.status(500).send({ message: 'Email is required' });
+
+    }
+
     try {
         const user = await UserModel.findOne({ email }).exec();
 
@@ -177,7 +182,7 @@ exports.deleteUser = asyncHandler(async (req, res) => {
 
             await UserModel.findByIdAndDelete(user)
         }
-        
+
 
     } catch (err) {
         res.status(500).json({ message: 'Server Error' });

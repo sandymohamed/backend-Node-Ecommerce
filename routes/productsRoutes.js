@@ -23,11 +23,12 @@ router.get('/all-brands', getBrandsNames)
 
 router.get('/all-categories', getCategoriesNames)
 
+
+router.post('/', upload.single('image'), protect, adminOnly, addNewProduct);
+
+router.put('/edit/:id', upload.single('image'), protect, adminOnly, editProduct);
+
 router.get('/:id', getProductByID)
-
-router.post('/', upload.single('image'),  addNewProduct);
-
-router.put('/:id', upload.single('image'), adminOnly, editProduct);
 
 router.delete('/:id', protect, adminOnly, deleteProductByID);
 
