@@ -157,21 +157,32 @@ exports.editProduct = asyncHandler(async (req, res) => {
 
   const { id } = req.params;
 
+  const {
+    name,
+    brand,
+    price,
+    description,
+    category,
+    rating,
+    countInStock
+  } = req.body;
+
   const product = await ProductModel.findById(id)
 
   if (!product) {
     return res.status(404).json({ message: 'Product not found' });
   }
   // Create a new product instance with the uploaded image path
-  product.name = req.body.name;
-  product.brand = req.body.brand;
-  product.price = req.body.price;
-  product.description = req.body.description;
-  product.image = req.file.path;
-  product.category = req.body.category;
-  product.rating = req.body.rating;
-  product.countInStock = req.body.countInStock;
+  product.name = name ||  product.name;
+  product.brand = brand || product.brand;
+  product.price = price || product.price;
+  product.description = description || product.description ;
+  product.image = req?.file?.path || product.image;
+  product.category = category || product.category;
+  product.rating = rating|| product.rating;
+  product.countInStock = countInStock || product.countInStock;
 
+  console.log('pr', product);
   try {
     // Save the new product to the database
     const updatedProduct = await product.save();
@@ -180,7 +191,7 @@ exports.editProduct = asyncHandler(async (req, res) => {
     res.json(updatedProduct);
   } catch (error) {
     // Handle any errors that occurred during saving
-    res.status(500).json({ message: 'Product update failed!!' });
+    res.status(500).json({ message: 'Product update failed!!', error });
   }
 });
 
